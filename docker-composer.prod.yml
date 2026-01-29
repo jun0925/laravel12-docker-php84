@@ -1,0 +1,14 @@
+services:
+  nginx:
+    # 운영에서 읽기 전용으로 마운트(선택)
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
+  php:
+    # 운영 ini로 분기하고 싶으면 여기서 마운트(예: php.ini.prod)
+    # volumes:
+    #   - ./docker/php/php.ini.prod:/usr/local/etc/php/conf.d/99-app.ini:ro
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
