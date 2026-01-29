@@ -1,0 +1,17 @@
+services:
+  php:
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/php.ini.dev:/usr/local/etc/php/conf.d/99-app.ini:ro
+
+  node:
+    image: node:24-alpine
+    container_name: laravel_node
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "5173:5173"
+    command: sh -lc "npm ci || npm install && npm run dev -- --host 0.0.0.0 --port 5173"
+    networks:
+      - shared

@@ -1,0 +1,12 @@
+date.timezone=Asia/Seoul
+
+memory_limit=512M
+upload_max_filesize=50M
+post_max_size=50M
+max_execution_time=120
+
+display_errors=On
+error_reporting=E_ALL
+
+; 개발 환경에서는 opcache 끄는 편이 디버깅 편함(필요 시 On으로 전환)
+opcache.enable=0
