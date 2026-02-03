@@ -1,5 +1,6 @@
 services:
   php:
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./:/var/www/html
       - ./docker/php/php.ini.dev:/usr/local/etc/php/conf.d/99-app.ini:ro
