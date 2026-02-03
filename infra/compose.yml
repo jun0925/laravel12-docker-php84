@@ -18,7 +18,7 @@ services:
 
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf:ro
 
     ports:
       - "3306:3306"
