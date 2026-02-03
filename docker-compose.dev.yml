@@ -3,6 +3,10 @@ services:
     volumes:
       - ./:/var/www/html
       - ./docker/php/php.ini.dev:/usr/local/etc/php/conf.d/99-app.ini:ro
+    depends_on:
+      - redis
+    networks:
+      - shared
 
   node:
     image: node:24-alpine
@@ -15,3 +19,22 @@ services:
     command: sh -lc "npm ci || npm install && npm run dev -- --host 0.0.0.0 --port 5173"
     networks:
       - shared
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: laravel_redis
+    ports:
+      - "6379:6379" # 개발 편의용. 로컬에서 redis-cli로 접속 안 할 거면 제거 가능
+    command: >
+      redis-server
+      --requirepass secret
+      --appendonly no
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-dev-data:/data
+    networks:
+      - shared
+
+volumes:
+  redis-dev-data:

@@ -1,0 +1,41 @@
+name: infra
+
+services:
+  mariadb:
+    image: mariadb:10.4.30
+    container_name: mariadb_legacy
+    restart: unless-stopped
+
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --log-bin=mysql-bin
+      - --binlog-format=ROW
+
+    environment:
+      MARIADB_ROOT_PASSWORD: secret
+      TZ: Asia/Seoul
+
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./conf/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+
+    ports:
+      - "3306:3306"
+
+    networks:
+      - shared
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-p$$MARIADB_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  mariadb_data:
+
+networks:
+  shared:
+    name: shared_net
+    driver: bridge
