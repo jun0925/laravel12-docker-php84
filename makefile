@@ -10,6 +10,9 @@ else
 COMPOSE = docker compose -f docker-compose.yml -f docker-compose.dev.yml
 endif
 
+# =========================
+# Docker
+# =========================
 env:
 	@echo "APP_ENV=$(APP_ENV)"
 	@echo "COMPOSE=$(COMPOSE)"
@@ -30,14 +33,29 @@ ps:
 logs:
 	$(COMPOSE) logs -f
 
-php:
-	$(COMPOSE) exec php bash
 
-# Laravel
-key:
-	$(COMPOSE) exec php php artisan key:generate
+# =========================
+# PHP / Laravel
+# =========================
+php:
+	$(COMPOSE) exec -it php bash
 
 migrate:
 	$(COMPOSE) exec php php artisan migrate
 
-.PHONY: up down restart ps logs php key migrate
+artisan:
+	$(COMPOSE) exec php php artisan $(cmd)
+
+tinker:
+	$(COMPOSE) exec php php artisan tinker
+
+# =========================
+# Node / Vite
+# =========================
+node:
+	$(COMPOSE) exec -it node sh
+
+npm:
+	$(COMPOSE) exec -it node npm $(cmd)
+
+.PHONY: up down restart ps logs php migrate artisan tinker node npm
