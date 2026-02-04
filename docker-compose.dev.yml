@@ -13,6 +13,7 @@ services:
     image: node:24-alpine
     container_name: laravel_node
     working_dir: /var/www/html
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./:/var/www/html
     ports:
