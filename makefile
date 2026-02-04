@@ -49,6 +49,9 @@ artisan:
 tinker:
 	$(COMPOSE) exec php php artisan tinker
 
+fix-permission:
+	sudo chown -R $$(id -u):$$(id -g) .
+
 # =========================
 # Node / Vite
 # =========================
@@ -58,4 +61,4 @@ node:
 npm:
 	$(COMPOSE) exec -it node npm $(cmd)
 
-.PHONY: up down restart ps logs php migrate artisan tinker node npm
+.PHONY: up down restart ps logs php migrate artisan tinker fix-permission node npm
